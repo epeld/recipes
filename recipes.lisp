@@ -21,6 +21,10 @@
   (:documentation "Represents a cooking recipe"))
 
 
+(defmethod print-object ((recipe recipe) stream)
+  (format stream "#<RECIPE FOR ~a>" (name recipe)))
+
+
 (defun ingredients-match-recipe-p (ingredients recipe)
   "Verify that the ingredients satisfy a given recipe"
   (let ((diff (set-difference (main-ingredients recipe) ingredients)))
