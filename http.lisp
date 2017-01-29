@@ -27,14 +27,41 @@
 
 
 ;;
+;; Util
+
+(defun split-ingredients (s)
+  "Split on whitespace, convert to keyword"
+  (let ((kws (find-package :keyword))
+        ingredients)
+    (loop for c across s
+       with word
+       do
+         (if (member c '(#\Tab #\Space #\Newline #\Return))
+             (when word
+               (push (intern (string-upcase (coerce (nreverse word) 'string))
+                             kws)
+                     ingredients)
+               (setf word nil))
+             (push c word))
+       finally
+         (when word
+           (push (intern (string-upcase (coerce (nreverse word) 'string))
+                         kws)
+                 ingredients)))
+    ingredients))
+
+;;
 ;; Endpoints
 
 (hunchentoot:define-easy-handler (main-page :uri "/") ()
   (html:as-string html:main-page))
 
 
-(hunchentoot:define-easy-handler (new-recipe :uri "/new-recipe") ()
-  (html:as-string html:new-recipe-page))
+(hunchentoot:define-easy-handler (new-recipe :uri "/new-recipe") (name ingredients description)
+  (let ((recipe (when (eq :post (hunchentoot:request-method*))
+                  ;; Warning: interning new keywords will eventually pollute your env
+                  (recipes:new-recipe name (split-ingredients ingredients) description))))
+    (html:as-string html:new-recipe-page recipe)))
 
 
 (hunchentoot:define-easy-handler (recipe :uri "/recipe") (name)
