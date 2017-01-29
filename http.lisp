@@ -30,5 +30,17 @@
 ;; Endpoints
 
 (hunchentoot:define-easy-handler (main-page :uri "/") ()
-  ;(setf (hunchentoot:content-type*) "text/plain")
   (html:as-string html:main-page))
+
+
+(hunchentoot:define-easy-handler (recipe :uri "/recipe") (name)
+  (let ((recipe (recipes:find-recipe name)))
+    (if recipe
+        (html:as-string html:recipe-page recipe)
+        (progn
+          (setf (hunchentoot:return-code*) hunchentoot:+http-not-found+)
+          (html:as-string html:recipe-not-found name)))))
+
+
+(hunchentoot:define-easy-handler (recipe :uri "/recipes") ()
+  (html:as-string html:recipes-list))

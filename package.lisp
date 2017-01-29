@@ -14,7 +14,9 @@
   (:export #:def-recipe
            #:name
            #:description
-           #:main-ingredients))
+           #:main-ingredients
+           #:find-recipe
+           #:sorted))
 
 
 (defpackage #:cookbook
@@ -28,5 +30,8 @@
 (defpackage #:html
   (:use #:cl)
   (:export #:main-page
-           #:as-string))
+           #:as-string
+           #:recipe-page
+           #:recipe-not-found
+           #:recipes-list))
 

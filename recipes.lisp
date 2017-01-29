@@ -47,4 +47,15 @@
         recipes))
 
 
-;(suggest-recipe (list :milk :eggs :butter :pasta :onions))
+(defun find-recipe (name)
+  "Find a recipe with a given name"
+  (find-if (lambda (recipe)
+             (string-equal name (name recipe)))
+           recipes))
+
+
+(defun sorted ()
+  "Return a list of recipes in alphabetical order"
+  (stable-sort recipes
+               #'string-lessp
+               :key #'name))

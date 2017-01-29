@@ -13,15 +13,47 @@
       (:p "This is a paragraph")))))
 
 
-(defun edit-recipe-page (stream recipe)
+(defun recipe-page (stream recipe)
   "Generate html for the main page"
   (cl-who:with-html-output (stream)
     (:html
      (:head
       (:title "Recipe Editor"))
      (:body
-      (:h1 (string (recipes:name recipe)))
-      (:p (string (recipes:description recipe)))))))
+      (:h1 (cl-who:str (recipes:name recipe)))
+      (:ul
+       (loop for ingr in (recipes:main-ingredients recipe) do
+            (cl-who:htm (:li (cl-who:str ingr)))))
+      (:p (cl-who:str (recipes:description recipe)))))))
+
+
+
+(defun recipe-not-found (stream name)
+  "404 Not found page for recipes"
+  (cl-who:with-html-output (stream)
+    (:html
+     (:head
+      (:title "Recipe Not Found"))
+     (:body
+      (:h1 "The recipe '" (cl-who:str name) "' could not be found")
+      (:p "The recipe list can help you find recipes"))))
+
+  404)
+
+
+(defun recipes-list (stream)
+  "404 Not found page for recipes"
+  (cl-who:with-html-output (stream)
+    (:html
+     (:head
+      (:title "Recipe List"))
+     (:body
+      (:h1 "List of all Recipes")
+      (:p "Later you will be able to search for recipes here")
+      (:ul
+       (loop for recipe in (recipes:sorted) do
+            (cl-who:htm
+             (:li (cl-who:str (recipes:name recipe))))))))))
 
 
 ;; For testing out pages:
