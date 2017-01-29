@@ -31,8 +31,8 @@
     (not diff)))
 
 
-(defun suggest-recipe (available-ingredients)
-  "Suggest a recipe, given the list of available ingredients"
+(defun available-recipes (available-ingredients)
+  "Filter the list of recipes, finding the ones compatible with the given ingredients"
   (loop for recipe in recipes 
      when (ingredients-match-recipe-p available-ingredients recipe)
        collect recipe))
