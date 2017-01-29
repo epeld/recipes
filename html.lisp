@@ -13,7 +13,7 @@
       (:p "This is a paragraph")))))
 
 
-(defun recipe-page (stream recipe recipes-url)
+(defun recipe-page (stream recipe)
   "Generate html for the main page"
   (cl-who:with-html-output (stream)
     (:html
@@ -24,13 +24,11 @@
       (:ul
        (loop for ingr in (recipes:main-ingredients recipe) do
             (cl-who:htm (:li (cl-who:str ingr)))))
-      (:p (cl-who:str (recipes:description recipe)))
-      (:a :href (cl-who:str recipes-url)
-          "Back to Recipe List")))))
+      (:p (cl-who:str (recipes:description recipe)))))))
 
 
 
-(defun recipe-not-found (stream name recipes-url)
+(defun recipe-not-found (stream name)
   "404 Not found page for recipes"
   (cl-who:with-html-output (stream)
     (:html
@@ -38,9 +36,7 @@
       (:title "Recipe Not Found"))
      (:body
       (:h1 "The recipe '" (cl-who:str name) "' could not be found")
-      (:p "The recipe list can help you find recipes")
-      (:a :href (cl-who:str recipes-url)
-          "Back to Recipe List"))))
+      (:p "The recipe list can help you find recipes"))))
 
   404)
 

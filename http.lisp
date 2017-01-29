@@ -36,10 +36,10 @@
 (hunchentoot:define-easy-handler (recipe :uri "/recipe") (name)
   (let ((recipe (recipes:find-recipe name)))
     (if recipe
-        (html:as-string html:recipe-page recipe "/recipes")
+        (html:as-string html:recipe-page recipe)
         (progn
           (setf (hunchentoot:return-code*) hunchentoot:+http-not-found+)
-          (html:as-string html:recipe-not-found name "/recipes")))))
+          (html:as-string html:recipe-not-found name)))))
 
 
 (hunchentoot:define-easy-handler (recipes :uri "/recipes") ()
