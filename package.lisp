@@ -33,5 +33,6 @@
            #:as-string
            #:recipe-page
            #:recipe-not-found
-           #:recipes-list))
+           #:recipes-list
+           #:new-recipe-page))
 

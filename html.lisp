@@ -13,6 +13,25 @@
       (:p "This is a paragraph")))))
 
 
+(defun new-recipe-page (stream)
+  "HTML for creating a new recipe"
+  (cl-who:with-html-output (stream)
+    (:html
+     (:head
+      (:title "New Recipe Editor")
+      (:style "textarea,input {display: block}"))
+     (:body
+      (:form :name "recipe"
+             (:div "Name"
+                   (:input :placeholder "Name"))
+             
+             (:div "Main Ingredients"
+                   (:textarea :placeholder "Main Ingredients"))
+             
+             (:div "Description"
+                   (:textarea :placeholder "Description")))))))
+
+
 (defun recipe-page (stream recipe)
   "Generate html for the main page"
   (cl-who:with-html-output (stream)

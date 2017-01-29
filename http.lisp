@@ -33,6 +33,10 @@
   (html:as-string html:main-page))
 
 
+(hunchentoot:define-easy-handler (new-recipe :uri "/new-recipe") ()
+  (html:as-string html:new-recipe-page))
+
+
 (hunchentoot:define-easy-handler (recipe :uri "/recipe") (name)
   (let ((recipe (recipes:find-recipe name)))
     (if recipe
