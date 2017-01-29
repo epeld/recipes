@@ -13,7 +13,17 @@
       (:p "This is a paragraph")))))
 
 
-(defun new-recipe-page (stream)
+(defun recipe-details (stream recipe)
+  "Produce html describing teh details of a recipe"
+  (cl-who:with-html-output (stream)
+    (:h1 (cl-who:str (recipes:name recipe)))
+    (:ul
+     (loop for ingredient in (recipes:main-ingredients recipe) do
+          (cl-who:htm (:li (cl-who:str ingredient)))))
+    (:p (cl-who:str (recipes:description recipe)))))
+
+
+(defun new-recipe-page (stream &optional recipe)
   "HTML for creating a new recipe"
   (cl-who:with-html-output (stream)
     (:html
@@ -21,6 +31,10 @@
       (:title "New Recipe Editor")
       (:style "textarea,input {display: block}"))
      (:body
+      (when recipe
+        (cl-who:htm
+         (:div (:h1 "Preview")
+               (recipe-details stream recipe))))
       (:form :name "recipe"
              (:div "Name"
                    (:input :placeholder "Name"))
@@ -39,11 +53,7 @@
      (:head
       (:title "Recipe Editor"))
      (:body
-      (:h1 (cl-who:str (recipes:name recipe)))
-      (:ul
-       (loop for ingr in (recipes:main-ingredients recipe) do
-            (cl-who:htm (:li (cl-who:str ingr)))))
-      (:p (cl-who:str (recipes:description recipe)))))))
+      (recipe-details stream recipe)))))
 
 
 
