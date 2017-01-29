@@ -12,6 +12,8 @@
 (defpackage #:recipes
   (:use #:cl)
   (:export #:def-recipe
+           #:register-recipe
+           #:new-recipe
            #:name
            #:description
            #:main-ingredients

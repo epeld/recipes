@@ -38,13 +38,24 @@
        collect recipe))
 
 
+(defun new-recipe (name ingredients description)
+  "Construct a new recipe, but doesn't add it do the list"
+  (make-instance 'recipe
+                 :name name
+                 :ingredients ingredients
+                 :description description))
+
+
+(defun register-recipe (recipe)
+  "Register a new recipe in the list"
+  (push recipe recipes))
+
+
 (defun def-recipe (name ingredients description)
-  "Define a new recipe"
-  (push (make-instance 'recipe
-                       :name name
-                       :ingredients ingredients
-                       :description description)
-        recipes))
+  "Short-hand for creating and registering a recipe"
+  (let ((recipe (new-recipe name ingredients description)))
+    (register-recipe recipe)
+    recipe))
 
 
 (defun find-recipe (name)
