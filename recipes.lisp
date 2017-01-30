@@ -44,8 +44,8 @@
 (defun new-recipe (name ingredients description)
   "Construct a new recipe, but doesn't add it do the list"
   (make-instance 'recipe
-                 :name name
-                 :ingredients ingredients
+                 :name (string-upcase name)
+                 :ingredients (mapcar #'string-upcase ingredients)
                  :description description))
 
 
