@@ -57,7 +57,6 @@
 
 (hunchentoot:define-easy-handler (new-recipe :uri "/new-recipe") (name ingredients description)
   (let ((recipe (when (eq :post (hunchentoot:request-method*))
-                  ;; Warning: interning new keywords will eventually pollute your env
                   (recipes:new-recipe name (split-ingredients ingredients) description))))
     (html:as-string html:new-recipe-page recipe)))
 
