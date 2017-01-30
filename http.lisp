@@ -35,7 +35,7 @@
     (loop for c across s
        with word
        do
-         (if (member c '(#\Tab #\Space #\Newline #\Return))
+         (if (member c '(#\Tab #\Space #\Newline #\Return #\,))
              (when word
                (push (coerce (nreverse word) 'string)
                      ingredients)
@@ -46,7 +46,7 @@
            (push (coerce (nreverse word) 'string)
                  ingredients)))
     
-    ingredients))
+    (nreverse ingredients)))
 
 ;;
 ;; Endpoints
@@ -55,10 +55,18 @@
   (html:as-string html:main-page))
 
 
+;; TODO split this into two with two different forms??
+;; How else handle preview?
 (hunchentoot:define-easy-handler (new-recipe :uri "/new-recipe") (name ingredients description)
   (let ((recipe (when name
-                  (recipes:new-recipe name (split-ingredients (or ingredients "")) (or description "")))))
-    (html:as-string html:new-recipe-page recipe)))
+                  (recipes:new-recipe name (split-ingredients (or ingredients "")) description))))
+
+    ;; Save recipe if POSTed
+    (if (and (eq (hunchentoot:request-method*) :post) recipe)
+        (progn (recipes:register-recipe recipe)
+               (hunchentoot:redirect (format nil "/recipe?name=~a" name)))
+    
+        (html:as-string html:new-recipe-page recipe))))
 
 
 (hunchentoot:define-easy-handler (recipe :uri "/recipe") (name)

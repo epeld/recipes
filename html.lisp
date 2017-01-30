@@ -20,34 +20,44 @@
     (:ul
      (loop for ingredient in (recipes:main-ingredients recipe) do
           (cl-who:htm (:li (cl-who:str ingredient)))))
-    (:p (cl-who:str (recipes:description recipe)))))
+    (:p (cl-who:str (recipes:description (or recipe ""))))))
 
 
 (defun new-recipe-page (stream &optional recipe)
   "HTML for creating a new recipe"
-  (cl-who:with-html-output (stream)
-    (:html
-     (:head
-      (:title "New Recipe Editor")
-      (:style "textarea,input {display: block}"))
-     (:body
-      (when recipe
-        (cl-who:htm
-         (:div (:h1 "Preview:")
-               (recipe-details stream recipe))))
-      (:form
-             (:div "Name"
-                   (:input :name "name" :placeholder "Name"))
+  (let (name ingredients description)
+    (when recipe
+      (setf name (recipes:name recipe))
+      (setf ingredients (recipes:main-ingredients recipe))
+      (setf description (or (recipes:description recipe) nil)))
+    
+    (cl-who:with-html-output (stream)
+      (:html
+       (:head
+        (:title "New Recipe Editor")
+        (:style "textarea,input {display: block}"))
+       (:body
+        (when recipe
+          (cl-who:htm
+           (:div (:h1 "Preview:")
+                 (recipe-details stream recipe))))
+        (:form
+         (:div "Name"
+               (:input :name "name" :placeholder "Name" :value (cl-who:str name)))
              
-             (:div "Main Ingredients"
-                   (:textarea :name "ingredients" :placeholder "Main Ingredients"))
+         (:div "Main Ingredients"
+               (:textarea :name "ingredients"
+                          :placeholder "Main Ingredients"
+                          (cl-who:str (format nil "~{~A~^, ~}" ingredients))))
              
-             (:div "Description"
-                   (:textarea :name "description" :placeholder "Description"))
+         (:div "Description"
+               (:textarea :name "description"
+                          :placeholder "Description"
+                          (cl-who:str description)))
 
-             (:input :type :submit :action :get :value "Preview")
-             (when recipe
-               (cl-who:htm (:input :type :submit :action :post :value "Save"))))))))
+         (:input :type :submit :method :get :value "Preview")
+         (when recipe
+           (cl-who:htm (:input :type :submit :method :post :value "Save")))))))))
 
 
 (defun recipe-page (stream recipe)
