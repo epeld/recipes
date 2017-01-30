@@ -31,23 +31,21 @@
 
 (defun split-ingredients (s)
   "Split on whitespace, convert to keyword"
-  (let ((kws (find-package :keyword))
-        ingredients)
+  (let (ingredients)
     (loop for c across s
        with word
        do
          (if (member c '(#\Tab #\Space #\Newline #\Return))
              (when word
-               (push (intern (string-upcase (coerce (nreverse word) 'string))
-                             kws)
+               (push (coerce (nreverse word) 'string)
                      ingredients)
                (setf word nil))
              (push c word))
        finally
          (when word
-           (push (intern (string-upcase (coerce (nreverse word) 'string))
-                         kws)
+           (push (coerce (nreverse word) 'string)
                  ingredients)))
+    
     ingredients))
 
 ;;
