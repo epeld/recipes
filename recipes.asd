@@ -6,5 +6,8 @@
   :license "Specify license here"
   :serial t
   :components ((:file "package")
-               (:file "recipes")))
+               (:file "recipes")
+               (:file "html")
+               (:file "http")
+               (:file "cookbook")))
 
