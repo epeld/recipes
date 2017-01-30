@@ -10,12 +10,15 @@
 
 (defclass recipe ()
   ((name :reader name
+         :type string
          :initarg :name)
    
    (main-ingredients :reader main-ingredients
+                     :type (list string)
                      :initarg :ingredients)
    
    (description :reader description
+                :type string
                 :initarg :description))
   
   (:documentation "Represents a cooking recipe"))
