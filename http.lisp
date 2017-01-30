@@ -56,8 +56,8 @@
 
 
 (hunchentoot:define-easy-handler (new-recipe :uri "/new-recipe") (name ingredients description)
-  (let ((recipe (when (eq :post (hunchentoot:request-method*))
-                  (recipes:new-recipe name (split-ingredients ingredients) description))))
+  (let ((recipe (when name
+                  (recipes:new-recipe name (split-ingredients (or ingredients "")) (or description "")))))
     (html:as-string html:new-recipe-page recipe)))
 
 

@@ -33,17 +33,21 @@
      (:body
       (when recipe
         (cl-who:htm
-         (:div (:h1 "Preview")
+         (:div (:h1 "Preview:")
                (recipe-details stream recipe))))
-      (:form :name "recipe"
+      (:form
              (:div "Name"
-                   (:input :placeholder "Name"))
+                   (:input :name "name" :placeholder "Name"))
              
              (:div "Main Ingredients"
-                   (:textarea :placeholder "Main Ingredients"))
+                   (:textarea :name "ingredients" :placeholder "Main Ingredients"))
              
              (:div "Description"
-                   (:textarea :placeholder "Description")))))))
+                   (:textarea :name "description" :placeholder "Description"))
+
+             (:input :type :submit :action :get :value "Preview")
+             (when recipe
+               (cl-who:htm (:input :type :submit :action :post :value "Save"))))))))
 
 
 (defun recipe-page (stream recipe)
