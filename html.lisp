@@ -42,6 +42,7 @@
            (:div (:h1 "Preview:")
                  (recipe-details stream recipe))))
         (:form
+         :method :post
          (:div "Name"
                (:input :name "name" :placeholder "Name" :value (cl-who:str name)))
              
@@ -55,9 +56,13 @@
                           :placeholder "Description"
                           (cl-who:str description)))
 
-         (:input :type :submit :method :get :value "Preview")
+         (:input :type :submit
+                 :value "Preview")
+         
          (when recipe
-           (cl-who:htm (:input :type :submit :method :post :value "Save")))))))))
+           (cl-who:htm (:input :type :submit
+                               :name "save"
+                               :value "Save")))))))))
 
 
 (defun recipe-page (stream recipe)

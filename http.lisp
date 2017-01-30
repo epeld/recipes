@@ -55,14 +55,15 @@
   (html:as-string html:main-page))
 
 
-;; TODO split this into two with two different forms??
-;; How else handle preview?
 (hunchentoot:define-easy-handler (new-recipe :uri "/new-recipe") (name ingredients description)
   (let ((recipe (when name
                   (recipes:new-recipe name (split-ingredients (or ingredients "")) description))))
 
     ;; Save recipe if POSTed
-    (if (and (eq (hunchentoot:request-method*) :post) recipe)
+    (if (and recipe
+             (eq (hunchentoot:request-method*) :post)
+             (hunchentoot:post-parameter "save"))
+        
         (progn (recipes:register-recipe recipe)
                (hunchentoot:redirect (format nil "/recipe?name=~a" name)))
     
