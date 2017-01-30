@@ -49,11 +49,6 @@
                  :description description))
 
 
-(defun register-recipe (recipe)
-  "Register a new recipe in the list"
-  (push recipe recipes))
-
-
 (defun def-recipe (name ingredients description)
   "Short-hand for creating and registering a recipe"
   (let ((recipe (new-recipe name ingredients description)))
@@ -66,6 +61,16 @@
   (find-if (lambda (recipe)
              (string-equal name (name recipe)))
            recipes))
+
+
+(defun register-recipe (recipe)
+  "Register a new recipe in the list"
+  ;; This is a bit slow but will work.
+  ;; Look for similarly named recipe and remove it first
+  (let ((old (find-recipe (name recipe))))
+    (when old
+      (setf recipes (delete old recipes))))
+  (push recipe recipes))
 
 
 (defun sorted ()
